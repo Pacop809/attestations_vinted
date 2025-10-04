@@ -126,11 +126,13 @@
     #attestation {
         display: none;
         margin-top: 40px;
-        padding: 50px;
+        padding: 30px 40px;
         background: white;
-        border: 3px solid #333;
-        border-radius: 10px;
+        border: 2px solid #333;
+        border-radius: 5px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        font-size: 11pt;
+        line-height: 1.4;
     }
     
     #attestation.show {
@@ -139,40 +141,46 @@
     
     .attestation-header {
         text-align: center;
-        font-size: 22px;
+        font-size: 18px;
         font-weight: bold;
         text-decoration: underline;
-        margin-bottom: 35px;
+        margin-bottom: 20px;
         color: #333;
     }
     
     .attestation-section {
-        margin-bottom: 25px;
-        line-height: 1.8;
+        margin-bottom: 15px;
+        line-height: 1.5;
+        font-size: 11pt;
     }
     
     .attestation-title {
         font-weight: bold;
-        margin-top: 25px;
-        margin-bottom: 12px;
-        font-size: 16px;
+        margin-top: 15px;
+        margin-bottom: 8px;
+        font-size: 11pt;
     }
     
     .signatures {
         display: flex;
         justify-content: space-between;
-        margin-top: 50px;
-        gap: 30px;
+        margin-top: 30px;
+        gap: 20px;
     }
     
     .signature-block {
         width: 45%;
     }
     
+    .signature-block p {
+        margin-bottom: 5px;
+        font-size: 11pt;
+    }
+    
     .footer-text {
-        margin-top: 40px;
+        margin-top: 25px;
         text-align: center;
-        font-size: 11px;
+        font-size: 9pt;
         font-style: italic;
         color: #666;
     }
@@ -241,22 +249,79 @@
     }
     
     @media print {
+        @page {
+            size: A4;
+            margin: 1cm;
+        }
+        
         body {
             background: white;
             padding: 0;
+            margin: 0;
         }
+        
         .container {
             box-shadow: none;
-            padding: 20px;
+            padding: 0;
+            margin: 0;
+            max-width: 100%;
         }
+        
         .action-buttons,
         #formSection,
         .instructions {
             display: none !important;
         }
+        
         #attestation {
             border: none;
             box-shadow: none;
+            padding: 15px 20px;
+            margin: 0;
+            page-break-after: avoid;
+            page-break-inside: avoid;
+            max-height: 100vh;
+        }
+        
+        .attestation-header {
+            font-size: 15pt;
+            margin-bottom: 12px;
+        }
+        
+        .attestation-section {
+            margin-bottom: 10px;
+            font-size: 10pt;
+            line-height: 1.35;
+        }
+        
+        .attestation-section p {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .attestation-title {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            font-size: 10pt;
+        }
+        
+        .signatures {
+            margin-top: 20px;
+            page-break-inside: avoid;
+        }
+        
+        .signature-block p {
+            margin-bottom: 3px;
+            font-size: 10pt;
+        }
+        
+        .signature-block br {
+            line-height: 0.5;
+        }
+        
+        .footer-text {
+            margin-top: 15px;
+            font-size: 8pt;
         }
     }
     
@@ -399,7 +464,7 @@
         <div class="signatures">
             <div class="signature-block">
                 <p><strong>Signature du vendeur:</strong></p>
-                <br><br>
+                <br>
                 <p>
                     Pseudonyme: <span id="displayVendor2"></span><br>
                     Date: <span id="displayDate2"></span>
@@ -407,7 +472,7 @@
             </div>
             <div class="signature-block">
                 <p><strong>Signature de l'acheteur :</strong></p>
-                <br><br>
+                <br>
                 <p>
                     Nom: Charlotte Palicot<br>
                     Date: <span id="displayDate3"></span>
@@ -422,7 +487,6 @@
 </div>
 
 <script>
-    // Charger le compteur depuis localStorage
     function loadCounter() {
         const savedCounter = localStorage.getItem('attestationCounter');
         if (savedCounter) {
@@ -431,18 +495,15 @@
         }
     }
     
-    // Sauvegarder le compteur
     function saveCounter(value) {
         localStorage.setItem('attestationCounter', value);
         updateCounterBadge(value);
     }
     
-    // Mettre à jour le badge du compteur
     function updateCounterBadge(value) {
         document.getElementById('counterBadge').textContent = 'Actuel: ' + value;
     }
     
-    // Mise à jour en temps réel du compteur
     document.getElementById('attestationNumber').addEventListener('input', function() {
         saveCounter(this.value);
     });
@@ -461,7 +522,6 @@
             return;
         }
         
-        // Remplir l'attestation
         document.getElementById('displayNumber').textContent = attestationNumber;
         document.getElementById('displayVendor').textContent = vendorPseudo;
         document.getElementById('displayVendor2').textContent = vendorPseudo;
@@ -476,7 +536,6 @@
         const nextNum = parseInt(attestationNumber) + 1;
         document.getElementById('nextNumber').textContent = nextNum;
         
-        // Afficher
         document.getElementById('attestation').classList.add('show');
         document.getElementById('actionButtons').classList.add('show');
         document.getElementById('instructions').classList.add('show');
@@ -495,7 +554,6 @@
         document.getElementById('attestationNumber').value = newNumber;
         saveCounter(newNumber);
         
-        // Réinitialiser
         document.getElementById('vendorPseudo').value = '';
         document.getElementById('articleDescription').value = '';
         document.getElementById('saleDate').value = '';
@@ -511,7 +569,6 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     
-    // Charger le compteur au démarrage
     window.addEventListener('load', loadCounter);
 </script>
 ```

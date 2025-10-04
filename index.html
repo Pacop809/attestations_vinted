@@ -1,1 +1,520 @@
+<!DOCTYPE html>
 
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur d'Attestations Vinted - PALIC'S STORE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+    }
+    
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 32px;
+    }
+    
+    .subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 40px;
+        font-size: 18px;
+    }
+    
+    .form-group {
+        margin-bottom: 25px;
+    }
+    
+    label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #333;
+        font-size: 15px;
+    }
+    
+    input[type="text"],
+    input[type="number"] {
+        width: 100%;
+        padding: 14px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 16px;
+        transition: all 0.3s;
+        font-family: inherit;
+    }
+    
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+    }
+    
+    button {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 10px;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+    
+    button:active {
+        transform: translateY(-1px);
+    }
+    
+    .info-box {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        padding: 20px;
+        border-radius: 12px;
+        margin-top: 30px;
+        border-left: 5px solid #4caf50;
+    }
+    
+    .info-box h3 {
+        margin-bottom: 12px;
+        color: #2e7d32;
+        font-size: 18px;
+    }
+    
+    .info-box p {
+        color: #1b5e20;
+        font-size: 14px;
+        line-height: 1.8;
+    }
+    
+    #attestation {
+        display: none;
+        margin-top: 40px;
+        padding: 50px;
+        background: white;
+        border: 3px solid #333;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    #attestation.show {
+        display: block;
+    }
+    
+    .attestation-header {
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+        text-decoration: underline;
+        margin-bottom: 35px;
+        color: #333;
+    }
+    
+    .attestation-section {
+        margin-bottom: 25px;
+        line-height: 1.8;
+    }
+    
+    .attestation-title {
+        font-weight: bold;
+        margin-top: 25px;
+        margin-bottom: 12px;
+        font-size: 16px;
+    }
+    
+    .signatures {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 50px;
+        gap: 30px;
+    }
+    
+    .signature-block {
+        width: 45%;
+    }
+    
+    .footer-text {
+        margin-top: 40px;
+        text-align: center;
+        font-size: 11px;
+        font-style: italic;
+        color: #666;
+    }
+    
+    .action-buttons {
+        display: none;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+    
+    .action-buttons.show {
+        display: flex;
+    }
+    
+    .action-buttons button {
+        flex: 1;
+    }
+    
+    .btn-print {
+        background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    }
+    
+    .btn-new {
+        background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+    }
+    
+    .instructions {
+        background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+        border-left: 5px solid #ffc107;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 12px;
+        display: none;
+    }
+    
+    .instructions.show {
+        display: block;
+    }
+    
+    .instructions h3 {
+        color: #856404;
+        margin-bottom: 12px;
+        font-size: 18px;
+    }
+    
+    .instructions ol {
+        color: #856404;
+        font-size: 15px;
+        line-height: 2;
+        padding-left: 25px;
+    }
+    
+    .instructions strong {
+        color: #5a4204;
+    }
+    
+    .counter-badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        margin-left: 10px;
+    }
+    
+    @media print {
+        body {
+            background: white;
+            padding: 0;
+        }
+        .container {
+            box-shadow: none;
+            padding: 20px;
+        }
+        .action-buttons,
+        #formSection,
+        .instructions {
+            display: none !important;
+        }
+        #attestation {
+            border: none;
+            box-shadow: none;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        .grid {
+            grid-template-columns: 1fr;
+        }
+        .signatures {
+            flex-direction: column;
+        }
+        .signature-block {
+            width: 100%;
+        }
+        .action-buttons {
+            flex-direction: column;
+        }
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Générateur d'Attestations de Cession</h1>
+        <p class="subtitle">Vinted - PALIC'S STORE</p>
+
+```
+    <div id="formSection">
+        <div class="form-group">
+            <label>📋 Numéro de l'attestation <span class="counter-badge" id="counterBadge">Actuel: 4</span></label>
+            <input type="number" id="attestationNumber" value="4" min="1">
+        </div>
+        
+        <div class="grid">
+            <div class="form-group">
+                <label>👤 Pseudonyme du vendeur *</label>
+                <input type="text" id="vendorPseudo" placeholder="Ex: noraschlager">
+            </div>
+            
+            <div class="form-group">
+                <label>👕 Description de l'article *</label>
+                <input type="text" id="articleDescription" placeholder="Ex: Regen/Outdoor Jacke">
+            </div>
+            
+            <div class="form-group">
+                <label>📅 Date de vente * (JJ/MM/AAAA)</label>
+                <input type="text" id="saleDate" placeholder="Ex: 08/08/2025">
+            </div>
+            
+            <div class="form-group">
+                <label>🔢 Numéro de transaction *</label>
+                <input type="text" id="transactionNumber" placeholder="Ex: 14895340572">
+            </div>
+            
+            <div class="form-group">
+                <label>💰 Montant total</label>
+                <input type="text" id="totalAmount" placeholder="Ex: 14,94 €">
+            </div>
+            
+            <div class="form-group">
+                <label>📦 Quantité</label>
+                <input type="text" id="quantity" value="1">
+            </div>
+        </div>
+        
+        <button onclick="generateAttestation()">📄 Générer l'Attestation</button>
+        
+        <div class="info-box">
+            <h3>ℹ️ Informations de la société (fixes)</h3>
+            <p>
+                <strong>Charlotte Palicot</strong> - SAS PALIC'S STORE<br>
+                BAT HABITATION ESC HABITA 3 CHEMIN DE HANCHES 28130 SAINT-MARTIN-DE-NIGELLES<br>
+                SIRET: 991 324 054 00014<br>
+                Email: palics.store@gmail.com
+            </p>
+        </div>
+    </div>
+    
+    <div class="instructions" id="instructions">
+        <h3>📝 Comment obtenir votre PDF :</h3>
+        <ol>
+            <li>Cliquez sur le bouton <strong>"🖨️ Imprimer / PDF"</strong> ci-dessous</li>
+            <li>Dans la fenêtre qui s'ouvre, choisissez <strong>"Enregistrer au format PDF"</strong> ou <strong>"Microsoft Print to PDF"</strong></li>
+            <li>Sur <strong>Windows</strong>: Appuyez sur <strong>Ctrl + P</strong></li>
+            <li>Sur <strong>Mac</strong>: Appuyez sur <strong>Cmd + P</strong></li>
+            <li>Cliquez sur <strong>"Enregistrer"</strong> et votre attestation PDF est prête ! 🎉</li>
+        </ol>
+    </div>
+    
+    <div class="action-buttons" id="actionButtons">
+        <button class="btn-print" onclick="printAttestation()">🖨️ Imprimer / Enregistrer en PDF</button>
+        <button class="btn-new" onclick="newAttestation()">🔄 Nouvelle Attestation N°<span id="nextNumber"></span></button>
+    </div>
+    
+    <div id="attestation">
+        <div class="attestation-header">
+            Attestation de cession N°<span id="displayNumber"></span>
+        </div>
+        
+        <div class="attestation-section">
+            <p>Je soussigné(e), <strong><span id="displayVendor"></span></strong> (pseudonyme Vinted), atteste avoir cédé les articles suivants à:</p>
+        </div>
+        
+        <div class="attestation-section">
+            <p>
+                <strong>Charlotte Palicot</strong><br>
+                SAS<br>
+                <strong>PALIC'S STORE</strong><br>
+                BAT HABITATION ESC HABITA 3 CHEMIN DE HANCHES 28130 SAINT-MARTIN-DE-NIGELLES<br>
+                SIRET : 991 324 054 00014<br>
+                Adresse e-mail: palics.store@gmail.com
+            </p>
+        </div>
+        
+        <div class="attestation-section">
+            <div class="attestation-title">Détails de la transaction:</div>
+            <p>
+                Date de la vente: <span id="displayDate"></span><br>
+                Numéro de transaction Vinted: <span id="displayTransaction"></span><br>
+                Montant total payé: <span id="displayAmount"></span>
+            </p>
+        </div>
+        
+        <div class="attestation-section">
+            <div class="attestation-title">Articles cédés:</div>
+            <p><span id="displayArticle"></span> &nbsp;&nbsp;&nbsp; Quantité: <span id="displayQuantity"></span></p>
+        </div>
+        
+        <div class="attestation-section">
+            <div class="attestation-title">Modalité:</div>
+            <p>La transaction a été conclue via la plateforme Vinted. Aucun autre document officiel n'a été fourni par le vendeur.</p>
+        </div>
+        
+        <div class="signatures">
+            <div class="signature-block">
+                <p><strong>Signature du vendeur:</strong></p>
+                <br><br>
+                <p>
+                    Pseudonyme: <span id="displayVendor2"></span><br>
+                    Date: <span id="displayDate2"></span>
+                </p>
+            </div>
+            <div class="signature-block">
+                <p><strong>Signature de l'acheteur :</strong></p>
+                <br><br>
+                <p>
+                    Nom: Charlotte Palicot<br>
+                    Date: <span id="displayDate3"></span>
+                </p>
+            </div>
+        </div>
+        
+        <div class="footer-text">
+            <p>Document généré automatiquement - Ne nécessite pas de signature manuscrite.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Charger le compteur depuis localStorage
+    function loadCounter() {
+        const savedCounter = localStorage.getItem('attestationCounter');
+        if (savedCounter) {
+            document.getElementById('attestationNumber').value = savedCounter;
+            updateCounterBadge(savedCounter);
+        }
+    }
+    
+    // Sauvegarder le compteur
+    function saveCounter(value) {
+        localStorage.setItem('attestationCounter', value);
+        updateCounterBadge(value);
+    }
+    
+    // Mettre à jour le badge du compteur
+    function updateCounterBadge(value) {
+        document.getElementById('counterBadge').textContent = 'Actuel: ' + value;
+    }
+    
+    // Mise à jour en temps réel du compteur
+    document.getElementById('attestationNumber').addEventListener('input', function() {
+        saveCounter(this.value);
+    });
+    
+    function generateAttestation() {
+        const attestationNumber = document.getElementById('attestationNumber').value;
+        const vendorPseudo = document.getElementById('vendorPseudo').value.trim();
+        const articleDescription = document.getElementById('articleDescription').value.trim();
+        const saleDate = document.getElementById('saleDate').value.trim();
+        const transactionNumber = document.getElementById('transactionNumber').value.trim();
+        const totalAmount = document.getElementById('totalAmount').value.trim();
+        const quantity = document.getElementById('quantity').value.trim();
+        
+        if (!vendorPseudo || !articleDescription || !saleDate || !transactionNumber) {
+            alert('⚠️ Veuillez remplir tous les champs obligatoires (*)');
+            return;
+        }
+        
+        // Remplir l'attestation
+        document.getElementById('displayNumber').textContent = attestationNumber;
+        document.getElementById('displayVendor').textContent = vendorPseudo;
+        document.getElementById('displayVendor2').textContent = vendorPseudo;
+        document.getElementById('displayArticle').textContent = articleDescription;
+        document.getElementById('displayDate').textContent = saleDate;
+        document.getElementById('displayDate2').textContent = saleDate;
+        document.getElementById('displayDate3').textContent = saleDate;
+        document.getElementById('displayTransaction').textContent = transactionNumber;
+        document.getElementById('displayAmount').textContent = totalAmount;
+        document.getElementById('displayQuantity').textContent = quantity;
+        
+        const nextNum = parseInt(attestationNumber) + 1;
+        document.getElementById('nextNumber').textContent = nextNum;
+        
+        // Afficher
+        document.getElementById('attestation').classList.add('show');
+        document.getElementById('actionButtons').classList.add('show');
+        document.getElementById('instructions').classList.add('show');
+        document.getElementById('formSection').style.display = 'none';
+        
+        document.getElementById('attestation').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function printAttestation() {
+        window.print();
+    }
+    
+    function newAttestation() {
+        const currentNumber = parseInt(document.getElementById('attestationNumber').value);
+        const newNumber = currentNumber + 1;
+        document.getElementById('attestationNumber').value = newNumber;
+        saveCounter(newNumber);
+        
+        // Réinitialiser
+        document.getElementById('vendorPseudo').value = '';
+        document.getElementById('articleDescription').value = '';
+        document.getElementById('saleDate').value = '';
+        document.getElementById('transactionNumber').value = '';
+        document.getElementById('totalAmount').value = '';
+        document.getElementById('quantity').value = '1';
+        
+        document.getElementById('attestation').classList.remove('show');
+        document.getElementById('actionButtons').classList.remove('show');
+        document.getElementById('instructions').classList.remove('show');
+        document.getElementById('formSection').style.display = 'block';
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    // Charger le compteur au démarrage
+    window.addEventListener('load', loadCounter);
+</script>
+```
+
+</body>
+</html>
